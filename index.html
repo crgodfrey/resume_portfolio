@@ -1,31 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tylergodfrey | Home</title>
-  <link rel="stylesheet" type="text/css" href="style1.css">
-  <link rel="icon" href="favicon.png" type="image/x-icon">
-</head>
-<body>
-  <header>
-    <a href="#" class="logo"></a>
-  </header>
-  <section>
-    <img src="background.png" id="background" alt="High-quality background image">
-    <div id="box-container">
-      <a href="resume" class="clickable-box">Resume</a>
-      <a href="portfolio" class="clickable-box">Portfolio</a>
-      <a href="contact" class="clickable-box">Contact me</a>
-    </div>
-  </section>
 
-  <script>
-    // Check if the screen width is less than or equal to 767 pixels
-    if (window.innerWidth <= 767) {
-      // Change the src attribute of the background image for mobile
-      document.getElementById('background').src = 'tyler-mobile.png';
-    }
-  </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tyler Godfrey | Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #01070f;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        header .logo {
+            color: #64ffda;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        header .logo img {
+            height: 36px;
+            width: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            padding: 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Animated Code Background */
+        #background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #02070e;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .code-line {
+            position: absolute;
+            color: #0088ffdb;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: nowrap;
+            animation: float 15s linear infinite;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+            }
+
+            100% {
+                transform: translateY(-100%) translateX(0);
+            }
+        }
+
+        /* Box Container */
+        #box-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 80%;
+            max-width: 400px;
+            z-index: 10;
+        }
+
+        .clickable-box {
+            width: 100%;
+            height: 60px;
+            background-color: rgba(10, 25, 47, 0.8);
+            color: #00aeffe7;
+            text-align: center;
+            line-height: 60px;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid #0088ffdb;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+        }
+
+        .clickable-box:hover {
+            background-color: rgba(100, 180, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(100, 188, 255, 0.2);
+        }
+
+        /* Intro Text */
+        #intro-text {
+            position: static;
+            color: #ccd6f6;
+            z-index: 10;
+            max-width: 600px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #intro-text h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 15px;
+            color: #ffd664;
+        }
+
+        #intro-text p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 767px) {
+            header {
+                padding: 20px 5%;
+            }
+
+            #box-container {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin-top: 40vh;
+            }
+
+            #intro-text {
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .clickable-box {
+                height: 50px;
+                line-height: 50px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="#" class="logo">
+            <img src="images/favicon.png" alt="Logo">
+        </a>
+    </header>
+
+    <section>
+        <div id="background"></div>
+
+        <div id="box-container">
+            <div id="intro-text">
+                <h1>Tyler Godfrey</h1>
+                <p>Multi-year expierenced lighting engineer</p>
+            </div>
+            <a href="resume.pdf" class="clickable-box">Resume</a>
+            <a href="portfolio" class="clickable-box">Portfolio</a>
+            <a href="contact" class="clickable-box">Contact me</a>
+        </div>
+    </section>
+
+    <script>
+        // Create animated code lines
+        const background = document.getElementById('background');
+        const languages = ['ETC', 'Eos', 'Hog 4', 'sACN', 'DMX512', 'Vectorworks', 'Donte', 'Illustrator', 'Photoshop', 'QLab', 'Companion', 'OSHA10', 'SI Preformer'];
+        const keywords = ['cue', 'fade', 'intensity', 'gobo', 'focus', 'patch', 'fixture', 'preset'];
+        const symbols = ['@', '#', '-', '+', '→', '↔', '|', '[ ]', '( )', '< >', '{ }'];
+
+
+        function createCodeLine() {
+            const line = document.createElement('div');
+            line.className = 'code-line';
+
+            // Create random code-like text
+            let codeText = '';
+            const lineLength = Math.floor(Math.random() * 8) + 3;
+            const indent = ' '.repeat(Math.floor(Math.random() * 4) * 2);
+
+            codeText += indent;
+
+            for (let i = 0; i < lineLength; i++) {
+                const randomType = Math.random();
+
+                if (randomType > 0.7) {
+                    // Add a language/framework
+                    codeText += languages[Math.floor(Math.random() * languages.length)] + ' ';
+                } else if (randomType > 0.5) {
+                    // Add a keyword
+                    codeText += keywords[Math.floor(Math.random() * keywords.length)] + ' ';
+                } else if (randomType > 0.3) {
+                    // Add a symbol
+                    codeText += symbols[Math.floor(Math.random() * symbols.length)] + ' ';
+                } else {
+                    // Add a random word
+                    codeText += Math.random().toString(36).substring(2, 5) + ' ';
+                }
+
+                // Sometimes add a number
+                if (Math.random() > 0.8) {
+                    codeText += Math.floor(Math.random() * 100) + ' ';
+                }
+            }
+
+            // Sometimes add a comment
+            if (Math.random() > 0.7) {
+                codeText += '// ' +
+                    ['CUE:', 'LIGHT:', 'NOTE:', 'FIX:'][Math.floor(Math.random() * 4)] + ' ' +
+                    ['focus', 'dim', 'check gel', 'patch DMX', 'recolor', 'run haze', 'move head'][Math.floor(Math.random() * 7)];
+
+            }
+
+            line.textContent = codeText.trim();
+            line.style.left = Math.random() * 90 + 5 + '%';
+            line.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            line.style.opacity = Math.random() * 0.4 + 0.2;
+            line.style.fontSize = (Math.random() * 4 + 12) + 'px';
+            line.style.animationDelay = Math.random() * 5 + 's';
+
+            background.appendChild(line);
+
+            // Remove line after animation completes
+            setTimeout(() => {
+                if (line.parentNode === background) {
+                    background.removeChild(line);
+                }
+            }, parseFloat(line.style.animationDuration) * 1000);
+        }
+
+        // Create initial lines
+        for (let i = 0; i < 30; i++) {
+            setTimeout(createCodeLine, i * 300);
+        }
+
+        // Continue creating new lines
+        setInterval(createCodeLine, 800);
+
+        // Mobile background adjustment
+        if (window.innerWidth <= 767) {
+            document.getElementById('box-container').style.marginTop = '30vh';
+        }
+    </script>
 </body>
+
 </html>
