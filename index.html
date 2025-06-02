@@ -19,8 +19,9 @@
 
         body {
             min-height: 100vh;
-            background: #01070f;
+            background: #000000;
             overflow-x: hidden;
+            cursor: none;
         }
 
         header {
@@ -65,37 +66,58 @@
             overflow: hidden;
         }
 
-        /* Animated Code Background */
+        /* Word Cloud Background */
         #background {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #02070e;
+            background: #000000;
             z-index: -1;
             overflow: hidden;
         }
 
-        .code-line {
+        .word-cloud-term {
             position: absolute;
-            color: #0088ffdb;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            white-space: nowrap;
-            animation: float 15s linear infinite;
+            color: #222222;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
             pointer-events: none;
             user-select: none;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px transparent;
         }
 
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) translateX(0);
-            }
+        /* Spotlight Effects */
+        .spotlight {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(255, 255, 200, 0.4) 0%, 
+                rgba(255, 255, 150, 0.2) 30%, 
+                rgba(255, 255, 100, 0.1) 60%, 
+                transparent 100%);
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(1px);
+            mix-blend-mode: screen;
+        }
 
-            100% {
-                transform: translateY(-100%) translateX(0);
-            }
+        .spotlight-beam {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(255, 245, 150, 0.6) 0%, 
+                rgba(255, 235, 120, 0.3) 40%, 
+                transparent 70%);
+            pointer-events: none;
+            z-index: 2;
+            mix-blend-mode: screen;
         }
 
         /* Box Container */
@@ -115,7 +137,7 @@
         .clickable-box {
             width: 100%;
             height: 60px;
-            background-color: rgba(10, 25, 47, 0.8);
+            background-color: rgba(10, 25, 47, 0.9);
             color: #00aeffe7;
             text-align: center;
             line-height: 60px;
@@ -125,13 +147,14 @@
             border: 1px solid #0088ffdb;
             transition: all 0.3s ease;
             font-weight: 500;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
         }
 
         .clickable-box:hover {
-            background-color: rgba(100, 180, 255, 0.1);
+            background-color: rgba(100, 180, 255, 0.2);
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(100, 188, 255, 0.2);
+            box-shadow: 0 5px 20px rgba(100, 188, 255, 0.3);
+            cursor: pointer;
         }
 
         /* Intro Text */
@@ -148,6 +171,7 @@
             font-size: clamp(2rem, 5vw, 3.5rem);
             margin-bottom: 15px;
             color: #ffd664;
+            text-shadow: 0 0 20px rgba(255, 214, 100, 0.5);
         }
 
         #intro-text p {
@@ -156,8 +180,51 @@
             opacity: 0.9;
         }
 
+        /* Source 4 Light Fixtures */
+        .source4-fixture {
+            position: absolute;
+            width: 40px;
+            height: 80px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .fixture-body {
+            width: 30px;
+            height: 60px;
+            background: linear-gradient(145deg, #333, #111);
+            border-radius: 5px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .fixture-lens {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ffeb3b, #ffc107);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            box-shadow: 0 0 15px rgba(255, 235, 59, 0.8);
+        }
+
+        .fixture-yoke {
+            width: 35px;
+            height: 8px;
+            background: #222;
+            position: absolute;
+            top: -4px;
+            left: -2.5px;
+            border-radius: 4px;
+        }
+
         /* Mobile styles */
         @media (max-width: 767px) {
+            body {
+                cursor: default;
+            }
+            
             header {
                 padding: 20px 5%;
             }
@@ -179,6 +246,17 @@
                 height: 50px;
                 line-height: 50px;
                 font-size: 14px;
+                cursor: pointer;
+            }
+
+            .spotlight {
+                width: 200px;
+                height: 200px;
+            }
+
+            .spotlight-beam {
+                width: 120px;
+                height: 120px;
             }
         }
     </style>
@@ -193,11 +271,32 @@
 
     <section>
         <div id="background"></div>
+        
+        <!-- Source 4 Fixtures -->
+        <div class="source4-fixture" id="fixture1">
+            <div class="fixture-yoke"></div>
+            <div class="fixture-body">
+                <div class="fixture-lens"></div>
+            </div>
+        </div>
+        
+        <div class="source4-fixture" id="fixture2">
+            <div class="fixture-yoke"></div>
+            <div class="fixture-body">
+                <div class="fixture-lens"></div>
+            </div>
+        </div>
+
+        <!-- Spotlights -->
+        <div class="spotlight" id="spotlight1"></div>
+        <div class="spotlight-beam" id="beam1"></div>
+        <div class="spotlight" id="spotlight2"></div>
+        <div class="spotlight-beam" id="beam2"></div>
 
         <div id="box-container">
             <div id="intro-text">
                 <h1>Tyler Godfrey</h1>
-                <p>Multi-year expierenced lighting engineer</p>
+                <p>Multi-year experienced lighting engineer</p>
             </div>
             <a href="resume.pdf" class="clickable-box">Resume</a>
             <a href="portfolio" class="clickable-box">Portfolio</a>
@@ -206,83 +305,194 @@
     </section>
 
     <script>
-        // Create animated code lines
         const background = document.getElementById('background');
-        const languages = ['ETC', 'Eos', 'Hog 4', 'sACN', 'DMX512', 'Vectorworks', 'Donte', 'Illustrator', 'Photoshop', 'QLab', 'Companion', 'OSHA10', 'SI Preformer'];
-        const keywords = ['cue', 'fade', 'intensity', 'gobo', 'focus', 'patch', 'fixture', 'preset'];
-        const symbols = ['@', '#', '-', '+', '→', '↔', '|', '[ ]', '( )', '< >', '{ }'];
+        const spotlight1 = document.getElementById('spotlight1');
+        const spotlight2 = document.getElementById('spotlight2');
+        const beam1 = document.getElementById('beam1');
+        const beam2 = document.getElementById('beam2');
+        const fixture1 = document.getElementById('fixture1');
+        const fixture2 = document.getElementById('fixture2');
 
+        // Lighting terminology for word cloud
+        const lightingTerms = [
+            // Equipment
+            'ETC', 'Eos', 'Hog 4', 'Source Four', 'PAR 64', 'Fresnel', 'Ellipsoidal', 'LED Strip', 'Moving Head',
+            'Gobo', 'Color Gel', 'Barn Doors', 'Top Hat', 'Donut', 'Iris', 'Shutter', 'C-Clamp', 'Safety Cable',
+            
+            // Control
+            'sACN', 'DMX512', 'Universe', 'Address', 'Patch', 'Channel', 'Dimmer', 'Intensity', 'Fade', 'Cue',
+            'Preset', 'Group', 'Scene', 'Chase', 'Effect', 'Macro', 'Blind', 'Live', 'Record', 'Update',
+            
+            // Software
+            'Vectorworks', 'Wysiwyg', 'Capture', 'Lightwright', 'QLab', 'Companion', 'Nomad', 'Onyx', 'GrandMA',
+            'Chamsys', 'Vista', 'Titan', 'Hog', 'Element', 'Ion', 'Gio', 'Apex',
+            
+            // Design Terms
+            'Focus', 'Beam Angle', 'Field Angle', 'Hot Spot', 'Spill', 'Color Temperature', 'CRI', 'Lumens',
+            'Foot Candles', 'Lux', 'Key Light', 'Fill Light', 'Back Light', 'Side Light', 'Down Light',
+            'Up Light', 'Cyc Light', 'Border Light', 'Footlight', 'Follow Spot',
+            
+            // Colors & Gels
+            'L200', 'L201', 'L204', 'R80', 'R02', 'R26', 'CTB', 'CTO', 'Bastard Amber', 'Steel Blue',
+            'Congo Blue', 'Lavender', 'Pink', 'Green', 'Red', 'Magenta', 'Cyan', 'White', 'Warm White',
+            'Cool White', 'Daylight', 'Tungsten',
+            
+            // Theatre Terms
+            'Stage Left', 'Stage Right', 'Upstage', 'Downstage', 'Center Stage', 'Wings', 'Fly Gallery',
+            'Catwalk', 'FOH', 'Booth', 'Grid', 'Batten', 'Lineset', 'Counterweight', 'Arbor',
+            
+            // Positions
+            'Electric', 'Border', 'Tormentor', 'Portal', 'Teaser', 'Scrim', 'Backdrop', 'Traveler',
+            'Austrian', 'Kabuki', 'Box Boom', 'Shin Buster', 'High Side', 'Low Side',
+            
+            // Technical
+            'Circuit', 'Load', 'Phase', 'Neutral', 'Ground', 'GFCI', 'Edison', 'Stage Pin', 'Twist Lock',
+            'Multi Cable', 'Socapex', 'Break Out', 'Twofer', 'Threefer', 'Adapter', 'Extension',
+            
+            // Safety & Standards
+            'OSHA', 'ANSI', 'UL Listed', 'Safety First', 'Lockout', 'Tagout', 'PPE', 'Hard Hat',
+            'Safety Glasses', 'Work Gloves', 'Harness', 'Lanyard', 'Fall Protection',
+            
+            // Programming
+            'Blackout', 'Bump', 'Flash', 'Strobe', 'Ramp', 'Step', 'Snap', 'Timed', 'Manual',
+            'Auto Follow', 'Wait', 'Delay', 'Inhibit', 'Release', 'Assert', 'Park'
+        ];
 
-        function createCodeLine() {
-            const line = document.createElement('div');
-            line.className = 'code-line';
+        let wordCloudElements = [];
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
 
-            // Create random code-like text
-            let codeText = '';
-            const lineLength = Math.floor(Math.random() * 8) + 3;
-            const indent = ' '.repeat(Math.floor(Math.random() * 4) * 2);
+        // Create word cloud
+        function createWordCloud() {
+            const numWords = 150;
+            
+            for (let i = 0; i < numWords; i++) {
+                const word = document.createElement('div');
+                word.className = 'word-cloud-term';
+                word.textContent = lightingTerms[Math.floor(Math.random() * lightingTerms.length)];
+                
+                // Random positioning
+                word.style.left = Math.random() * 95 + '%';
+                word.style.top = Math.random() * 95 + '%';
+                
+                // Random sizing based on importance
+                const fontSize = Math.random() * 30 + 12;
+                word.style.fontSize = fontSize + 'px';
+                
+                // Slight rotation for organic feel
+                word.style.transform = `rotate(${(Math.random() - 0.5) * 20}deg)`;
+                
+                // Random opacity for depth
+                word.style.opacity = Math.random() * 0.3 + 0.1;
+                
+                background.appendChild(word);
+                wordCloudElements.push(word);
+            }
+        }
 
-            codeText += indent;
+        // Mouse tracking
+        let targetX1 = mouseX;
+        let targetY1 = mouseY;
+        let targetX2 = mouseX + 100;
+        let targetY2 = mouseY + 100;
+        let currentX1 = mouseX;
+        let currentY1 = mouseY;
+        let currentX2 = mouseX + 100;
+        let currentY2 = mouseY + 100;
 
-            for (let i = 0; i < lineLength; i++) {
-                const randomType = Math.random();
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // First spotlight follows mouse directly
+            targetX1 = mouseX;
+            targetY1 = mouseY;
+            
+            // Second spotlight follows with offset and slight delay
+            targetX2 = mouseX + 150 + Math.sin(Date.now() * 0.001) * 50;
+            targetY2 = mouseY + 100 + Math.cos(Date.now() * 0.001) * 30;
+        });
 
-                if (randomType > 0.7) {
-                    // Add a language/framework
-                    codeText += languages[Math.floor(Math.random() * languages.length)] + ' ';
-                } else if (randomType > 0.5) {
-                    // Add a keyword
-                    codeText += keywords[Math.floor(Math.random() * keywords.length)] + ' ';
-                } else if (randomType > 0.3) {
-                    // Add a symbol
-                    codeText += symbols[Math.floor(Math.random() * symbols.length)] + ' ';
+        function updateSpotlights() {
+            // Smooth spotlight movement
+            currentX1 += (targetX1 - currentX1) * 0.1;
+            currentY1 += (targetY1 - currentY1) * 0.1;
+            currentX2 += (targetX2 - currentX2) * 0.08;
+            currentY2 += (targetY2 - currentY2) * 0.08;
+
+            // Update spotlight positions
+            spotlight1.style.left = (currentX1 - 150) + 'px';
+            spotlight1.style.top = (currentY1 - 150) + 'px';
+            beam1.style.left = (currentX1 - 100) + 'px';
+            beam1.style.top = (currentY1 - 100) + 'px';
+
+            spotlight2.style.left = (currentX2 - 150) + 'px';
+            spotlight2.style.top = (currentY2 - 150) + 'px';
+            beam2.style.left = (currentX2 - 100) + 'px';
+            beam2.style.top = (currentY2 - 100) + 'px';
+
+            // Update fixture positions (they should point toward their spotlights)
+            fixture1.style.left = Math.max(0, currentX1 - 200) + 'px';
+            fixture1.style.top = Math.max(0, currentY1 - 300) + 'px';
+            
+            fixture2.style.left = Math.min(window.innerWidth - 40, currentX2 + 100) + 'px';
+            fixture2.style.top = Math.max(0, currentY2 - 280) + 'px';
+
+            // Illuminate words within spotlight range
+            wordCloudElements.forEach(word => {
+                const rect = word.getBoundingClientRect();
+                const wordX = rect.left + rect.width / 2;
+                const wordY = rect.top + rect.height / 2;
+
+                const dist1 = Math.sqrt(Math.pow(wordX - currentX1, 2) + Math.pow(wordY - currentY1, 2));
+                const dist2 = Math.sqrt(Math.pow(wordX - currentX2, 2) + Math.pow(wordY - currentY2, 2));
+
+                const minDist = Math.min(dist1, dist2);
+                const maxIllumination = 200;
+
+                if (minDist < maxIllumination) {
+                    const intensity = 1 - (minDist / maxIllumination);
+                    const brightness = Math.min(intensity * 2, 1);
+                    
+                    word.style.color = `rgba(255, 255, 255, ${brightness})`;
+                    word.style.textShadow = `0 0 ${intensity * 20}px rgba(255, 245, 150, ${intensity * 0.8})`;
+                    word.style.transform = `rotate(${(Math.random() - 0.5) * 20}deg) scale(${1 + intensity * 0.2})`;
                 } else {
-                    // Add a random word
-                    codeText += Math.random().toString(36).substring(2, 5) + ' ';
+                    word.style.color = '#222222';
+                    word.style.textShadow = '0 0 10px transparent';
+                    word.style.transform = `rotate(${(Math.random() - 0.5) * 20}deg) scale(1)`;
                 }
+            });
 
-                // Sometimes add a number
-                if (Math.random() > 0.8) {
-                    codeText += Math.floor(Math.random() * 100) + ' ';
-                }
-            }
-
-            // Sometimes add a comment
-            if (Math.random() > 0.7) {
-                codeText += '// ' +
-                    ['CUE:', 'LIGHT:', 'NOTE:', 'FIX:'][Math.floor(Math.random() * 4)] + ' ' +
-                    ['focus', 'dim', 'check gel', 'patch DMX', 'recolor', 'run haze', 'move head'][Math.floor(Math.random() * 7)];
-
-            }
-
-            line.textContent = codeText.trim();
-            line.style.left = Math.random() * 90 + 5 + '%';
-            line.style.animationDuration = (Math.random() * 10 + 10) + 's';
-            line.style.opacity = Math.random() * 0.4 + 0.2;
-            line.style.fontSize = (Math.random() * 4 + 12) + 'px';
-            line.style.animationDelay = Math.random() * 5 + 's';
-
-            background.appendChild(line);
-
-            // Remove line after animation completes
-            setTimeout(() => {
-                if (line.parentNode === background) {
-                    background.removeChild(line);
-                }
-            }, parseFloat(line.style.animationDuration) * 1000);
+            requestAnimationFrame(updateSpotlights);
         }
 
-        // Create initial lines
-        for (let i = 0; i < 30; i++) {
-            setTimeout(createCodeLine, i * 300);
-        }
+        // Initialize
+        createWordCloud();
+        updateSpotlights();
 
-        // Continue creating new lines
-        setInterval(createCodeLine, 800);
+        // Add some subtle animation to fixtures
+        setInterval(() => {
+            const fixtures = document.querySelectorAll('.source4-fixture');
+            fixtures.forEach(fixture => {
+                const currentTransform = fixture.style.transform || '';
+                const wobble = Math.sin(Date.now() * 0.002) * 2;
+                fixture.style.transform = currentTransform + ` rotate(${wobble}deg)`;
+            });
+        }, 50);
 
-        // Mobile background adjustment
+        // Mobile touch support
         if (window.innerWidth <= 767) {
-            document.getElementById('box-container').style.marginTop = '30vh';
+            document.addEventListener('touchmove', (e) => {
+                const touch = e.touches[0];
+                mouseX = touch.clientX;
+                mouseY = touch.clientY;
+                
+                targetX1 = mouseX;
+                targetY1 = mouseY;
+                targetX2 = mouseX + 100;
+                targetY2 = mouseY + 80;
+            });
         }
     </script>
 </body>
